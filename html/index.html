@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
+    <script src="../js/index.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/exercise6.css">
+    <link rel="stylesheet" href="../css/tstyle.css">
+    <link rel="stylesheet" href="../css/vstyle.css">
+    <link rel="stylesheet" href="../css/personal.css">
+    <title>Angular Project</title>
+</head>
+
+<body ng-app="navbar">
+    <nav>
+        <ul>
+            <li><a href="#/home">Home</a></li>
+            <li><a href="#/calculator">Calculator</a></li>
+            <li><a href="#/todo">ToDo List</a></li>
+            <li><a href="#/exercise6">Events</a></li>
+            <li><a href="#/filter">Filter</a></li>
+            <li><a href="#/feedback">Feedback Form</a></li>
+            <li><a href="#/media">Media</a></li>
+            <li><a href="#/personal">Personal Details</a></li>
+            <li><a href="http://localhost/form-php/index.html" target="_blank">More Details</a></li>
+        </ul>
+    </nav>
+
+    <div ng-view></div>
+
+    <script type="text/ng-template" id="home.html">
+        <div class="homestyle" ng-controller="homeCtrl">
+            <div class="intro">
+                <h1>Welcome To Let's Beano</h1>
+                <h2>Made by {{ text }}</h2>
+            </div>
+            <div style="display:flex;justify-content:center;background-color:black;margin-bottom:30vh" class="homeimages">
+                <img style="height:50vh; width:20vw;margin:10px;border:2px solid white" src="../assets/Img1.jpg" alt="">
+                <img style="height:50vh; width:20vw;margin:10px;border:2px solid white" src="../assets/Img7.jpg" alt="">
+                <img style="height:50vh; width:20vw;margin:10px;border:2px solid white" src="../assets/Img3.jpg" alt="">
+                <img style="height:50vh; width:20vw;margin:10px;border:2px solid white" src="../assets/Img4.jpg" alt="">
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="calculator.html">
+        <div ng-controller="calculatorCtrl">
+            <div class="calc">
+                <h1>Calculate total cost of tickets</h1>
+                <form>
+                    <label for="num1">Enter the ticket price : </label>
+                    <input type="number" ng-model="num1" id="num1"><br>
+                    <select name="opertor" id="opertaor" ng-model="operator">
+                        <option value="+">+</option>
+                        <option value="-">-</option>
+                        <option value="*">*</option>
+                        <option value="/">/</option>
+                    </select><br>
+                    <label for="num2">Enter the ticket price : </label>
+                    <input type="number" ng-model="num2" id="num2"><br>
+                    <button ng-click="calculate()">Calculate Result</button><br>
+                    <label for="num2">Result : {{ result }} </label>
+                </form>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="todo.html">
+        <div ng-controller="todoCtrl">
+            <div class="todo">
+                <h1>Things to do...</h1>
+                <form class="greet">
+                    <label for="name">Name : </label>
+                    <input type="text" ng-model="name" placeholder="Enter your name">
+                    <p>Welcome <span ng-bind="name">{{ name }}</span> !!!</p>
+                </form>
+                <div class="tasks">
+                    <div class="pending">
+                        <form class="ptask" ng-submit="todoAdd()">
+                            <label for="taskname">Enter text here : </label>
+                            <input type="text" ng-model="pinput" placeholder="Pending...">
+                            <button type="submit">Add Task</button>
+                        </form>
+                        <div ng-repeat="x in todoList">
+                            <span class="taskp">{{ x }}</span>
+                        </div>
+                    </div>
+                    <div class="completed">
+                        <form class="ctask" ng-submit="todoRemove()">
+                            <label for="taskname">Enter text here : </label>
+                            <input type="text" ng-model="cinput" placeholder="Completed...">
+                            <button type="submit">Done Task</button>
+                        </form>
+                        <div ng-repeat="x in doneList">
+                            <span class="taskc">{{ x }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="exercise6.html">
+        <div class="exercise6" ng-controller="layoutCtrl">
+            <nav class="navbar">
+                <p class="heading">Let's Beano</p>
+                <button class="joinnow">Join Now</button>
+            </nav>
+            <p class="name">Latest Events...</p>
+            <div class="searchbar">
+                <input class="search" type="text" placeholder="Search for latest events..">
+                <button class="searchbtn">Seach</button>
+                <div class="filter">
+                    <p>View : </p>
+                    <button ng-click="list()" class="list">List View</button>
+                    <button ng-click="block()" class="block">Block View</button>
+                </div>
+            </div>
+            <div class="listview" ng-show="listVisible">
+                <table>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Location</th>
+                        <th>Time</th>
+                        <th>Price</th>
+                        <th>No. Of People</th>
+                    </tr>
+                    <tr>
+                        <td>Music Festival</td>
+                        <td>Central Park</td>
+                        <td>3:00pm-10:00pm</td>
+                        <td>$50 per day</td>
+                        <td>10,000</td>
+                    </tr>
+                    <tr>
+                        <td>Charity Auction</td>
+                        <td>Hilton Hotel</td>
+                        <td>6:00pm-9:00pm</td>
+                        <td>Free entry</td>
+                        <td>500</td>
+                    </tr>
+                    <tr>
+                        <td>Movie Night</td>
+                        <td>Beach</td>
+                        <td>7:00pm-9:00pm</td>
+                        <td>Free entry</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>Conference</td>
+                        <td>Convention Center</td>
+                        <td>9:00am-5:00pm</td>
+                        <td>$150 per day</td>
+                        <td>500</td>
+                    </tr>
+                    <tr>
+                        <td>Art Exhibition</td>
+                        <td>Art Gallery</td>
+                        <td>10:00am-6:00pm</td>
+                        <td>$10 entry</td>
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                        <td>Sporting Event</td>
+                        <td>Stadium</td>
+                        <td>1:00pm-5:00pm</td>
+                        <td>$25 per ticket</td>
+                        <td>20,000</td>
+                    </tr>
+                    <tr>
+                        <td>Book Fair</td>
+                        <td>Library</td>
+                        <td>10:00am-4:00pm</td>
+                        <td>Free entry</td>
+                        <td>1,000</td>
+                    </tr>
+                    <tr>
+                        <td>Craft Fair</td>
+                        <td>Community Center</td>
+                        <td>12:00pm-5:00pm</td>
+                        <td>$5 entry</td>
+                        <td>500</td>
+                    </tr>
+                </table>
+            </div>
+    
+            <div class="blockview" ng-show="blockVisible">
+                <div class="images">
+                    <div class="card">
+                        <img src="../assets/Img1.jpg" alt="Music Festival">
+                        <h3>Music Festival</h3>
+                        <p><strong>Location:</strong> Central Park</p>
+                        <p><strong>Time:</strong> 3:00pm-10:00pm</p>
+                        <p><strong>Price:</strong> $50 per day</p>
+                        <p><strong>No. Of People:</strong> 10,000</p>
+                    </div>
+    
+                    <div class="card">
+                        <img src="../assets/Img2.jpg" alt="Charity Auction">
+                        <h3>Charity Auction</h3>
+                        <p><strong>Location:</strong> Hilton Hotel</p>
+                        <p><strong>Time:</strong> 6:00pm-9:00pm</p>
+                        <p><strong>Price:</strong> Free entry</p>
+                        <p><strong>No. Of People:</strong> 500</p>
+                    </div>
+    
+                    <div class="card">
+                        <img src="../assets/Img3.jpg" alt="Movie Night">
+                        <h3>Movie Night</h3>
+                        <p><strong>Location:</strong> Beach</p>
+                        <p><strong>Time:</strong> 7:00pm-9:00pm</p>
+                        <p><strong>Price:</strong> Free entry</p>
+                        <p><strong>No. Of People:</strong> 100</p>
+                    </div>
+    
+                    <div class="card">
+                        <img src="../assets/Img4.jpg" alt="Conference">
+                        <h3>Conference</h3>
+                        <p><strong>Location:</strong> Convention</p>
+                        <p><strong>Time:</strong> 9:00am-5:00pm</p>
+                        <p><strong>Price:</strong> $150 per day</p>
+                        <p><strong>No. Of People:</strong> 500</p>
+                    </div>
+    
+                    <div class="card">
+                        <img src="../assets/Img5.jpg" alt="Art Exhibition">
+                        <h3>Art Exhibition</h3>
+                        <p><strong>Location:</strong> Art Gallery</p>
+                        <p><strong>Time:</strong> 10:00am-6:00pm</p>
+                        <p><strong>Price:</strong> $10 entry</p>
+                        <p><strong>No. Of People:</strong> 200</p>
+                    </div>
+                    <div class="card">
+                        <img src="../assets/Img6.jpg" alt="Art Exhibition">
+                        <h3>Art Exhibition</h3>
+                        <p><strong>Location:</strong> Art Gallery</p>
+                        <p><strong>Time:</strong> 10:00am-6:00pm</p>
+                        <p><strong>Price:</strong> $10 entry</p>
+                        <p><strong>No. Of People:</strong> 200</p>
+                    </div>
+    
+                    <div class="card">
+                        <img src="../assets/Img7.jpg" alt="Art Exhibition">
+                        <h3>Art Exhibition</h3>
+                        <p><strong>Location:</strong> Art Gallery</p>
+                        <p><strong>Time:</strong> 10:00am-6:00pm</p>
+                        <p><strong>Price:</strong> $10 entry</p>
+                        <p><strong>No. Of People:</strong> 200</p>
+                    </div>
+    
+                    <div class="card">
+                        <img src="../assets/Img8.jpg" alt="Art Exhibition">
+                        <h3>Art Exhibition</h3>
+                        <p><strong>Location:</strong> Art Gallery</p>
+                        <p><strong>Time:</strong> 10:00am-6:00pm</p>
+                        <p><strong>Price:</strong> $10 entry</p>
+                        <p><strong>No. Of People:</strong> 200</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="filter.html">
+        <br><h2>Payment Details</h2><br>
+        <div ng-controller="customerController">
+        <table>
+            <tr>
+                <td>First name:</td>
+                <td><input type="text" ng-model="customer.firstName"></td>
+            </tr>
+            <tr>
+                <td>Last name: </td>
+                <td><input type="text" ng-model="customer.lastName"></td>
+            </tr>
+            <tr>
+                <td>Amount Paid: </td>
+                <td><input type="text" ng-model="customer.fees"></td>
+            </tr>
+            <tr>
+                <td>Search Event: </td>
+                <td><input type="text" ng-model="eventName"></td>
+            </tr>
+        </table>
+        <br />
+        <table>
+            <tr>
+                <td>Name in Upper Case: </td>
+                <td>{{customer.fullName() |
+                    uppercase}}</td>
+            </tr>
+            <tr>
+                <td>Name in Lower Case: </td>
+                <td>{{customer.fullName() |
+                    lowercase}}</td>
+            </tr>
+            <tr>
+                <td>Amount Paid: </td>
+                <td>{{customer.fees | currency}}
+                </td>
+            </tr>
+            <tr>
+                <td>Events:</td>
+                <td>
+                    <ul>
+                        <li ng-repeat="event in customer.events | filter:eventName |orderBy:'amt'">
+                            {{ event.name + ', Amount:' + event.amt }}
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+    </script>
+    <script type="text/ng-template" id="texteditor.html">
+        <div class="texteditor" ng-controller="textCtrl">
+            <div class="title">
+                <p>Feedback Form</p>
+            </div>
+            <div class="features">
+                <button class="button" ng-click="newFile()">New Feedback</button>
+                <button class="button" ng-click="loadFile()">Load Feedback</button>
+                <button class="button" ng-click="saveFile()">Save Feedback</button>
+                <button class="button" ng-click="cutFile()">Cut</button>
+                <button class="button" ng-click="copyFile()">Copy</button>
+                <button class="button" ng-click="pasteFile()">Paste</button>
+                <button class="button" ng-click="exitFile()">Submit</button>
+            </div>
+            <div class="filename">
+                <form>
+                    <div ng-show="newIsVisible">
+                        <label for="filename">FILE NAME : </label>
+                        <input class="textinput" type="text" ng-model="filename" placeholder="Enter your file name">
+                        <br><br>
+                        <p style="font-size: 15px;"><em>*When you create a new file the old contents along with the name will be lost. Each time you create a new file, you give it a name and enter the content.</em></p>
+                    </div> 
+                    <div ng-show="loadIsVisible">
+                        <label for="filename">UPLOAD NAME : </label>
+                        <input type="file" id="fileInput">
+                        <br><br>
+                        <p style="font-size: 15px;"><em>*Choose the required file and again click on load file to display the contents of the file in the textarea.</em></p>
+                    </div>
+                    <br><br>
+                    <textarea ng-show="isVisible" id="content" ng-model="content" cols="150" rows="25"></textarea>
+                </form>
+                <p class="exitmessage">{{ message }}</p>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="videoeditor.html">
+        <div>
+            <div class="title">
+                <p>Videos of Beano</p>
+            </div>
+            <div class="videosrc" ng-controller="videoCtrl">
+                <video class="videosize" id="myVideo" ng-src="{{videoUrl}}" controls></video>
+                <div class="controls">
+                    <button ng-click="restart()"><img src="../assets/restart.png" alt=""></button>
+                    <button ng-click="minus()"><img src="../assets/minus.png" alt=""></button>
+                    <button ng-click="play()"><img src="../assets/play.png" alt=""></button>
+                    <button ng-click="pause()"><img src="../assets/pause.png" alt=""></button>
+                    <button ng-click="add()"><img src="../assets/add.png" alt=""></button>
+                    <button ng-click="mute()"><img src="../assets/mute.png" alt=""></button>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="personal.html">
+        <div class="personalcard">
+            <div class="card">
+                <div class="card-header">Personal Information</div>
+                <div class="card-body">
+                    <form id="cardForm" name="cardForm">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" ng-model="card.name" required>
+                        <div class="error" id="nameError" style="display:none;">Name is required</div>          
+                        <br><br><br>
+                        <label for="mobile">Mobile:</label>
+                        <input type="tel" id="mobile" name="mobile" ng-model="card.mobile" ng-pattern="/^[0-9]{10}$/" required>
+                        <div class="error" id="mobileError" style="display:none;">Mobile is required</div>
+                        <div class="error" id="mobilePatternError" style="display:none;">Invalid mobile number format</div>
+                        <br><br><br>
+                        <input class="perbtn" type="button" name="submit" id="submit" value="Submit" onclick="validateForm()">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </script>
+
+</body>
+
+</html>
